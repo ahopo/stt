@@ -25,10 +25,6 @@ type WhereVar struct {
 }
 
 const (
-	EQUAL   = "="
-	GTHAN   = ">"
-	LTHAN   = "<"
-	UNEQUAL = "!="
 	_select = "SELECT"
 	_insert = "INSERT"
 	_delete = "DELETE"
@@ -38,6 +34,13 @@ const (
 	_string = "string"
 	_int    = "int"
 	_float  = "float64"
+)
+
+var (
+	EQUAL   = "="
+	GTHAN   = ">"
+	LTHAN   = "<"
+	UNEQUAL = "!="
 )
 
 func New(_struct interface{}) *STT {
@@ -111,7 +114,7 @@ func (s *Condition) Where(i string) *Condition {
 	return s
 }
 
-func NewWhereVar() WhereVar {
+func (st *STT) NewWhereVar() WhereVar {
 	wv := new(WhereVar)
 	return *wv
 }
