@@ -23,6 +23,14 @@ type Condition struct {
 type WhereVar struct {
 	query []string
 }
+type LogicalOperator struct {
+	EQ   string
+	GT   string
+	GTEQ string
+	LT   string
+	LTEQ string
+	UEQ  string
+}
 
 const (
 	_select = "SELECT"
@@ -34,13 +42,6 @@ const (
 	_string = "string"
 	_int    = "int"
 	_float  = "float64"
-)
-
-var (
-	EQUAL   = "="
-	GTHAN   = ">"
-	LTHAN   = "<"
-	UNEQUAL = "!="
 )
 
 func New(_struct interface{}) *STT {
@@ -68,7 +69,7 @@ func (st *STT) Create() string {
 	for _, field := range st.fields {
 		flds = append(flds, fmt.Sprint(field.Value, " ", field.DataType, " ", field.Identity))
 	}
-	return fmt.Sprintf("%s %s (\n%s\n);", _create, st.table_name, strings.Join(flds, ",\n"))
+	return fmt.Sprintf("%s %ss (\n%s\n);", _create, st.table_name, strings.Join(flds, ",\n"))
 }
 func (st *STT) Delete() string {
 	return fmt.Sprint(_delete, st.table_name, h.GetLimit(st.limit), h.GetOffSet(st.offset))
@@ -146,4 +147,14 @@ func (s *Condition) Build() string {
 		s.query = fmt.Sprint(s.query, h.GetOffSet(s.offSet))
 	}
 	return strings.TrimSpace(s.query)
+}
+func (stt *STT) LO() LogicalOperator {
+	lo := new(LogicalOperator)
+	lo.EQ = "="
+	lo.GT = ">"
+	lo.GTEQ = ">="
+	lo.LT = "<"
+	lo.LTEQ = "<="
+	lo.UEQ = "!="
+	return *lo
 }
