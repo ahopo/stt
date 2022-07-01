@@ -110,6 +110,11 @@ func (s *Condition) Where(i string) *Condition {
 	s.where = i
 	return s
 }
+
+func NewWhereVar() WhereVar {
+	wv := new(WhereVar)
+	return *wv
+}
 func (w *WhereVar) Normal(condition string, key string, value interface{}) *WhereVar {
 	w.query = append(w.query, fmt.Sprintf(" %s %s %v", key, condition, h.GetSqlString(value)))
 	return w
