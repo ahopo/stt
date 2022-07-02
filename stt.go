@@ -47,7 +47,7 @@ const (
 func New(_struct interface{}) *STT {
 	st := new(STT)
 	st.table = _struct
-	st.table_name = h.StructName(_struct)
+	st.table_name = fmt.Sprint(h.StructName(_struct), "s")
 	st.fields = h.GetFields(_struct)
 	return st
 }
@@ -69,7 +69,7 @@ func (st *STT) Create() string {
 	for _, field := range st.fields {
 		flds = append(flds, fmt.Sprint(field.Value, " ", field.DataType, " ", field.Identity))
 	}
-	return fmt.Sprintf("%s %ss (\n%s\n);", _create, st.table_name, strings.Join(flds, ",\n"))
+	return fmt.Sprintf("%s %s (\n%s\n);", _create, st.table_name, strings.Join(flds, ",\n"))
 }
 func (st *STT) Delete() *Condition {
 	s := new(Condition)
