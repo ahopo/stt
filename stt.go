@@ -71,8 +71,10 @@ func (st *STT) Create() string {
 	}
 	return fmt.Sprintf("%s %ss (\n%s\n);", _create, st.table_name, strings.Join(flds, ",\n"))
 }
-func (st *STT) Delete() string {
-	return fmt.Sprint(_delete, st.table_name, h.GetLimit(st.limit), h.GetOffSet(st.offset))
+func (st *STT) Delete() *Condition {
+	s := new(Condition)
+	s.query = fmt.Sprintf(`%s FROM %s`, _delete, st.table_name)
+	return s
 }
 
 func (st *STT) Update(i interface{}) *Condition {
@@ -82,11 +84,10 @@ func (st *STT) Update(i interface{}) *Condition {
 	data := h.GetValues(i)
 	for index, field := range st.fields {
 		if strings.ToLower(field.Value) == "id" {
-
 			continue
 		}
 		if index <= len(data) {
-			str = append(str, fmt.Sprintf(`%s = %s`, field.Key, h.GetValues(i)[index-1]))
+			str = append(str, fmt.Sprintf(`%s = %s`, field.Key, h.GetValues(i)[len(data)-index]))
 		}
 
 	}
@@ -131,19 +132,15 @@ func (w *WhereVar) AND(condition string, key string, value interface{}) *WhereVa
 	w.query = append(w.query, fmt.Sprintf("AND %s %s %v", key, condition, h.GetSqlString(value)))
 	return w
 }
-func (w *WhereVar) GetString() string {
-	return strings.Join(w.query, " ")
-}
+func (w *WhereVar) GetString() string { return strings.Join(w.query, " ") }
 func (s *Condition) Build() string {
-
 	if len(s.where) > 0 {
-
 		s.query = fmt.Sprint(s.query, " WHERE ", s.where)
 	}
 	if s.limit > 0 {
 		s.query = fmt.Sprint(s.query, h.GetLimit(s.limit))
 	}
-	if s.limit > 0 {
+	if s.offSet > 0 {
 		s.query = fmt.Sprint(s.query, h.GetOffSet(s.offSet))
 	}
 	return strings.TrimSpace(s.query)
