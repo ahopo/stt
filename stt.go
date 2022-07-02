@@ -69,7 +69,7 @@ func (st *STT) Create() string {
 	for _, field := range st.fields {
 		flds = append(flds, fmt.Sprint(field.Value, " ", field.DataType, " ", field.Identity))
 	}
-	return fmt.Sprintf("%s %s (\n%s\n);", _create, st.table_name, strings.Join(flds, ",\n"))
+	return fmt.Sprintf("%s TABLE %s (\n%s\n);", _create, st.table_name, strings.Join(flds, ",\n"))
 }
 func (st *STT) Delete() *Condition {
 	s := new(Condition)
