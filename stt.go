@@ -86,8 +86,9 @@ func (st *STT) Update(i interface{}) *Condition {
 		if strings.ToLower(field.Value) == "id" {
 			continue
 		}
-		if index <= len(data) {
-			str = append(str, fmt.Sprintf(`%s = %s`, field.Value, h.GetValues(i)[index]))
+		if index < len(data) {
+
+			str = append(str, fmt.Sprintf(`%s = %s`, field.Value, data[index]))
 		}
 
 	}
