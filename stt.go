@@ -62,7 +62,7 @@ func (st *STT) Insert(i interface{}) string {
 		flds = append(flds, fmt.Sprint(field.Value))
 
 	}
-	return fmt.Sprintf("%s INTO %s (%s) VALUES(%s)", _insert, st.table_name, strings.Join(flds, ","), strings.Join(h.GetValues(i)[1], ","))
+	return fmt.Sprintf("%s INTO %s (%s) VALUES(%s)", _insert, st.table_name, strings.Join(flds, ","), strings.Join(h.GetValues(i), ","))
 }
 func (st *STT) Create() string {
 	var flds []string
